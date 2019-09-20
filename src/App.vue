@@ -11,6 +11,7 @@
       </main>
       <AppFooter />
     </Blured>
+    <Modal />
   </div>
 </template>
 
@@ -18,12 +19,14 @@
 import AppHeader from "./components/AppHeader";
 import Blured from "./components/Blured";
 import AppFooter from "./components/AppFooter";
+import Modal from "./components/Modal";
 
 export default {
   components: {
     AppHeader,
     Blured,
-    AppFooter
+    AppFooter,
+    Modal
   },
   data() {
     return {

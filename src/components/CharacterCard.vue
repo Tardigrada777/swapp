@@ -1,17 +1,18 @@
 <template>
   <div class="characterCard">
-    <div class="characterCard__avatar" :style="{backgroundColor: avatarColor}">
-      <span>{{ firstChar }}</span>
-    </div>
+    <FirstCharAvatar :name="character.name" />
     <div class="characterCard__name">{{ character.name }}</div>
     <div class="characterCard__species">{{ species }}</div>
   </div>
 </template>
 
 <script>
-import { avatarColor } from "../utils/avatarColor";
+import FirstCharAvatar from "./FirstCharAvatar";
 
 export default {
+  components: {
+    FirstCharAvatar
+  },
   data() {
     return {
       // FIXME: temp dev
@@ -26,12 +27,6 @@ export default {
     };
   },
   computed: {
-    avatarColor() {
-      return avatarColor(this.character.name);
-    },
-    firstChar() {
-      return this.character.name[0] || "A";
-    },
     species() {
       return this.character.species.join(", ");
     }
@@ -64,27 +59,6 @@ export default {
     box-shadow: 0px 10px 40px rgba(37, 136, 167, 0.38);
     transition: box-shadow 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     cursor: pointer;
-  }
-
-  &__avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    align-self: center;
-
-    margin-bottom: 10px;
-
-    span {
-      font-weight: 500;
-      font-size: 48px;
-      line-height: 56px;
-      color: $white;
-    }
   }
 
   &__name {
