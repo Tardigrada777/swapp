@@ -1,7 +1,7 @@
 <template>
   <div class="charactersList">
-    <div class="charactersList__item" v-for="(character, i) in 10" :key="`char#${i}`">
-      <CharacterCard />
+    <div class="charactersList__item" v-for="(character, i) in items" :key="`char#${i}`">
+      <CharacterCard :character="character" />
     </div>
   </div>
 </template>
@@ -10,6 +10,9 @@
 import CharacterCard from "../components/CharacterCard";
 
 export default {
+  props: {
+    items: Array
+  },
   components: {
     CharacterCard
   }

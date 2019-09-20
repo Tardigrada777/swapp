@@ -10,9 +10,6 @@ export function avatarColor(name = '') {
     '#ec407a'
   ];
 
-  const letterIndex = (Math.random() * (name.length - 1)).toFixed(0);
-  const letter = name[letterIndex];
-
-  const colorIndex = (letter.charCodeAt(0) - 65) % colors.length;
+  const colorIndex = (name.charCodeAt(0) - 65) % colors.length;
   return colors[colorIndex];
 }

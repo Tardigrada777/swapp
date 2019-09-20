@@ -2,7 +2,7 @@
   <div class="characterCard">
     <FirstCharAvatar :name="character.name" />
     <div class="characterCard__name">{{ character.name }}</div>
-    <div class="characterCard__species">{{ species }}</div>
+    <div class="characterCard__species">{{ character.species }}</div>
   </div>
 </template>
 
@@ -10,26 +10,24 @@
 import FirstCharAvatar from "./FirstCharAvatar";
 
 export default {
+  props: {
+    character: Object
+  },
   components: {
     FirstCharAvatar
   },
   data() {
     return {
       // FIXME: temp dev
-      character: {
-        name: "Luke Skywalker",
-        species: [
-          // TODO: XHR
-          "Human",
-          "Jedy"
-        ]
-      }
+      // character: {
+      //   name: "Luke Skywalker",
+      //   species: [
+      //     // TODO: XHR
+      //     "Human",
+      //     "Jedy"
+      //   ]
+      // }
     };
-  },
-  computed: {
-    species() {
-      return this.character.species.join(", ");
-    }
   }
 };
 </script>
