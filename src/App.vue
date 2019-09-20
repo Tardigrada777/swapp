@@ -1,25 +1,34 @@
 <template>
-  <div id="app" class="app">
-    <AppHeader class="header" />
-    <main class="content">
-      <div class="content__view">
-        <div class="container">
-          <router-view />
+  <div id="app">
+    <Blured :blur="blur" class="app">
+      <AppHeader class="header" />
+      <main class="content">
+        <div class="content__view">
+          <div class="container">
+            <router-view />
+          </div>
         </div>
-      </div>
-      <footer class="content__footer">
-        <div class="container">Footer content</div>
-      </footer>
-    </main>
+        <footer class="content__footer">
+          <div class="container">Footer content</div>
+        </footer>
+      </main>
+    </Blured>
   </div>
 </template>
 
 <script>
 import AppHeader from "./components/AppHeader";
+import Blured from "./components/Blured";
 
 export default {
   components: {
-    AppHeader
+    AppHeader,
+    Blured
+  },
+  data() {
+    return {
+      blur: false
+    };
   }
 };
 </script>
@@ -38,18 +47,17 @@ export default {
 }
 
 .content {
-  background-color: palevioletred;
   flex-grow: 2;
 
   display: flex;
   flex-direction: column;
 
   &__view {
-    background-color: orangered;
+    background-color: $light-black;
     flex-grow: 1;
   }
   &__footer {
-    background-color: teal;
+    background-color: $black;
   }
 }
 </style>
