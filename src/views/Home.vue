@@ -1,11 +1,18 @@
 <template>
-  <div class="home">Any text</div>
+  <div class="home">
+    <br />
+    <CharactersList />
+  </div>
 </template>
 
 <script>
+import CharactersList from "../components/CharactersList";
+
 export default {
   name: "home",
-  components: {}
+  components: {
+    CharactersList
+  }
 };
 </script>
 
