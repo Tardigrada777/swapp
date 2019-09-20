@@ -19,22 +19,27 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async getCharacters({ commit }) {
+    async getCharacters({ commit, dispatch }) {
       const { data } = await axios.get('people/');
 
-      data.results.forEach(async c => {
-        if (c.species.length === 0) return (c.species = 'Unknown');
-
-        try {
-          const species = await axios.get(c.species[0]);
-          return (c.species = species.data.name);
-        } catch (error) {
-          console.log(error);
-          return (c.species = 'Unknown');
-        }
-      });
-
       commit('SET_CHARACTERS', data.results);
+      dispatch('getSpecies');
+    },
+    async getSpecies({ commit, state }) {
+      const characters = state.characters.map(c => {
+        if (c.species.length === 0) {
+          c.species = 'Unknown';
+          return c;
+        }
+        axios
+          .get(c.species[0])
+          .then(res => {
+            c.species = res.data.name;
+          })
+          .catch(err => console.log(err));
+        return c;
+      });
+      commit('SET_CHARACTERS', characters);
     }
   },
   getters: {
