@@ -1,7 +1,12 @@
 @import './smart-grid';
 @import './colors';
+@import './utils';
 
 @include reset();
+
+* {
+  box-sizing: border-box;
+}
 
 .container {
   @include wrapper();

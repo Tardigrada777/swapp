@@ -8,9 +8,7 @@
             <router-view />
           </div>
         </div>
-        <footer class="content__footer">
-          <div class="container">Footer content</div>
-        </footer>
+        <AppFooter class="content__footer" />
       </main>
     </Blured>
   </div>
@@ -19,11 +17,13 @@
 <script>
 import AppHeader from "./components/AppHeader";
 import Blured from "./components/Blured";
+import AppFooter from "./components/AppFooter";
 
 export default {
   components: {
     AppHeader,
-    Blured
+    Blured,
+    AppFooter
   },
   data() {
     return {
@@ -55,9 +55,6 @@ export default {
   &__view {
     background-color: $light-black;
     flex-grow: 1;
-  }
-  &__footer {
-    background-color: $black;
   }
 }
 </style>

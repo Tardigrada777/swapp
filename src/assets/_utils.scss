@@ -1,0 +1,10 @@
+@import './maps';
+
+/* <div class="bg--white"></div> */
+.bg {
+  @each $color, $value in $global-colors {
+    &--#{$color} {
+      background-color: $value;
+    }
+  }
+}
