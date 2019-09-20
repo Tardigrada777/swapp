@@ -1,11 +1,21 @@
 <template>
   <header class="appHeader">
-    <div class="container">Header content</div>
+    <div class="container">
+      <div class="appHeader__content">
+        <MainLogo />
+      </div>
+    </div>
   </header>
 </template>
 
 <script>
-export default {};
+import MainLogo from "./MainLogo";
+
+export default {
+  components: {
+    MainLogo
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -14,5 +24,13 @@ export default {};
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   background-size: cover;
+  display: flex;
+  align-items: center;
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>

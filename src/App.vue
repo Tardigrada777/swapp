@@ -8,8 +8,8 @@
             <router-view />
           </div>
         </div>
-        <AppFooter class="content__footer" />
       </main>
+      <AppFooter />
     </Blured>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default {
 
 <style lang="scss">
 @import "./assets/global.scss";
+@import "./assets/_smart-grid.scss";
 
 .app {
   min-height: 100vh;
@@ -43,7 +44,10 @@ export default {
 }
 
 .header {
-  min-height: 33vh;
+  min-height: calc(100vh * 1 / 3);
+
+  @include md(min-height, auto);
+  @include md(padding, 57px 0px);
 }
 
 .content {
@@ -51,6 +55,7 @@ export default {
 
   display: flex;
   flex-direction: column;
+  min-height: calc(100vh * 2 / 3);
 
   &__view {
     background-color: $light-black;
