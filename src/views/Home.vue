@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <br />
-    <CharactersList :items="characters" />
+    <!-- <CharactersList :items="characters" /> -->
+    <Preloader />
   </div>
 </template>
 
@@ -9,10 +10,13 @@
 import { mapGetters, mapActions } from "vuex";
 import CharactersList from "../components/CharactersList";
 
+import Preloader from "../components/Preloader";
+
 export default {
   name: "home",
   components: {
-    CharactersList
+    CharactersList,
+    Preloader
   },
   computed: {
     ...mapGetters(["characters"])
