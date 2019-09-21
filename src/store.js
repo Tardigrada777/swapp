@@ -11,22 +11,28 @@ const axios = Axios.create({
 
 export default new Vuex.Store({
   state: {
-    characters: []
+    characters: [],
+    loading: false
   },
   mutations: {
     SET_CHARACTERS(state, characters) {
       state.characters = characters;
+    },
+    TOGGLE_LOADING(state) {
+      state.loading = !state.loading;
     }
   },
   actions: {
     async getCharacters({ commit, dispatch }) {
+      commit('TOGGLE_LOADING');
       const { data } = await axios.get('people/');
-
-      commit('SET_CHARACTERS', data.results);
-      dispatch('getSpecies');
+      dispatch('getSpecies', data.results).then(res => {
+        commit('SET_CHARACTERS', res);
+        commit('TOGGLE_LOADING');
+      });
     },
-    async getSpecies({ commit, state }) {
-      const characters = state.characters.map(c => {
+    async getSpecies({ commit }, characters) {
+      characters.map(c => {
         if (c.species.length === 0) {
           c.species = 'Unknown';
           return c;
@@ -35,14 +41,16 @@ export default new Vuex.Store({
           .get(c.species[0])
           .then(res => {
             c.species = res.data.name;
+            return c;
           })
           .catch(err => console.log(err));
-        return c;
       });
-      commit('SET_CHARACTERS', characters);
+
+      return characters;
     }
   },
   getters: {
-    characters: s => s.characters
+    characters: s => s.characters,
+    isLoading: s => s.loading
   }
 });

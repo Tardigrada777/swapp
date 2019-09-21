@@ -1,7 +1,7 @@
 <template>
   <div class="preloader">
-    <video onloadeddata="this.play();" autoplay loop>
-      <source type="video/mp4" src="../assets/video/videoplayback.mp4" />Your browser does not support the video tag or the file format of this video.
+    <video autoplay loop>
+      <source src="../assets/video/videoplayback.mp4" type="video/mp4" />Your browser does not support the video tag or the file format of this video.
     </video>
   </div>
 </template>

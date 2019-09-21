@@ -15,19 +15,6 @@ export default {
   },
   components: {
     FirstCharAvatar
-  },
-  data() {
-    return {
-      // FIXME: temp dev
-      // character: {
-      //   name: "Luke Skywalker",
-      //   species: [
-      //     // TODO: XHR
-      //     "Human",
-      //     "Jedy"
-      //   ]
-      // }
-    };
   }
 };
 </script>
