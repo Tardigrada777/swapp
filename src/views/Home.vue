@@ -4,13 +4,20 @@
       <Preloader v-if="isLoading" />
     </transition>
     <transition enter-class="content-enter-in" enter-to-class="content-enter" mode="out-in">
-      <CharactersList v-if="contentVisible && !isLoading" :items="characters" />
+      <div class="mainContent" v-if="contentVisible && !isLoading">
+        <div class="mainContent__search">
+          <Search placeholder="Search by name" v-model="test" />
+        </div>
+
+        <CharactersList :items="characters" />
+      </div>
     </transition>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import Search from "../components/Search";
 import CharactersList from "../components/CharactersList";
 
 import Preloader from "../components/Preloader";
@@ -19,11 +26,13 @@ export default {
   name: "home",
   components: {
     CharactersList,
-    Preloader
+    Preloader,
+    Search
   },
   data() {
     return {
-      contentVisible: false
+      contentVisible: false,
+      test: ""
     };
   },
   computed: {
@@ -49,12 +58,29 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../assets/_smart-grid.scss";
+
 .home {
   padding: {
     top: 80px;
     bottom: 160px;
   }
 }
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__search {
+    margin-bottom: 80px;
+
+    @include col();
+    @include size(8);
+    @include size-md(12);
+  }
+}
+
 .preloader-leave {
   opacity: 0;
   transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1);
