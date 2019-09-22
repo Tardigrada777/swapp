@@ -1,6 +1,6 @@
 <template>
   <div class="characterCard">
-    <FirstCharAvatar :name="character.name" />
+    <FirstCharAvatar class="characterCard__avatar" :name="character.name" />
     <div class="characterCard__name">{{ character.name }}</div>
     <div class="characterCard__species">{{ character.species }}</div>
   </div>
@@ -44,6 +44,10 @@ export default {
     box-shadow: 0px 10px 40px rgba(37, 136, 167, 0.38);
     transition: box-shadow 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     cursor: pointer;
+  }
+
+  &__avatar {
+    margin-bottom: 10px;
   }
 
   &__name {

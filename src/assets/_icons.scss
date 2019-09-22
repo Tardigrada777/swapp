@@ -5,8 +5,6 @@ $icon-names: ('search', 'calendar', 'alien', 'gender', 'world', 'film');
   background-size: contain;
   display: block;
 
-  margin: 50px;
-
   @each $iconName in $icon-names {
     &--#{$iconName} {
       background-image: url('./assets/icons/#{$iconName}.svg');
