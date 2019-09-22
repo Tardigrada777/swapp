@@ -1,12 +1,13 @@
 <template>
   <div class="charactersList">
     <div class="charactersList__item" v-for="(character, i) in items" :key="`char#${i}`">
-      <CharacterCard :character="character" />
+      <CharacterCard :character="character" @click="openCharacterModal(character)" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import CharacterCard from "../components/CharacterCard";
 
 export default {
@@ -15,6 +16,17 @@ export default {
   },
   components: {
     CharacterCard
+  },
+  methods: {
+    ...mapMutations({
+      setModalState: "SET_CHARACTER_MODAL_STATE",
+      blur: "SET_BLUR"
+    }),
+    openCharacterModal(character) {
+      this.setModalState(true);
+      this.blur(true);
+      document.body.style.overflow = "hidden";
+    }
   }
 };
 </script>

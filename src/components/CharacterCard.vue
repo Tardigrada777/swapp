@@ -1,5 +1,5 @@
 <template>
-  <div class="characterCard">
+  <div class="characterCard" @click="$emit('click')">
     <FirstCharAvatar class="characterCard__avatar" :name="character.name" />
     <div class="characterCard__name">{{ character.name }}</div>
     <div class="characterCard__species">{{ character.species }}</div>

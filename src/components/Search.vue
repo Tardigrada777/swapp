@@ -44,6 +44,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/_colors.scss";
 @import "../assets/_fonts.scss";
+@import "../assets/_smart-grid.scss";
 
 .search {
   position: relative;
@@ -58,7 +59,8 @@ export default {
     background: url("../assets/icons/search.svg");
     background-repeat: no-repeat;
     background-position: center right;
-    background-size: 30px 30px;
+    background-size: 23px 23px;
+    @include md(background-size, 18px 18px);
     border: none;
     outline: none;
     border-bottom: 1px solid $gray;

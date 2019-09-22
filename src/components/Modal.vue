@@ -1,65 +1,69 @@
 <template>
-  <div class="modal-container" v-if="isOpen">
-    <div class="appModal">
-      <span class="appModal__closeBtn">&times;</span>
-      <div class="appModal__content">
-        <div class="characterInfo">
-          <div class="characterInfo__avatar">
-            <FirstCharAvatar name="Luke" />
+  <transition v-on:enter="enter" v-on:leave="leave">
+    <div class="modal-container" ref="modal" v-if="isModalOpen">
+      <div class="appModal">
+        <span class="appModal__closeBtn" @click="close">&times;</span>
+        <div class="appModal__content">
+          <div class="characterInfo">
+            <div class="characterInfo__avatar">
+              <FirstCharAvatar name="Luke" />
+            </div>
+            <div class="characterInfo__name">Luke</div>
           </div>
-          <div class="characterInfo__name">Luke</div>
-        </div>
 
-        <Divider />
+          <Divider />
 
-        <div class="details">
-          <ul class="details__column">
-            <li class="characterDetailsItem">
-              <div class="characterDetailsItem__icon">
-                <Icon type="calendar" size="24" />
-              </div>
-              <div class="characterDetailsItem__type">Birth&nbsp;Year</div>
-              <div class="characterDetailsItem__content">AV23</div>
-            </li>
-            <li class="characterDetailsItem">
-              <div class="characterDetailsItem__icon">
-                <Icon type="alien" size="24" />
-              </div>
-              <div class="characterDetailsItem__type">Species</div>
-              <div class="characterDetailsItem__content">Human</div>
-            </li>
-            <li class="characterDetailsItem">
-              <div class="characterDetailsItem__icon">
-                <Icon type="gender" size="24" />
-              </div>
-              <div class="characterDetailsItem__type">Gender</div>
-              <div class="characterDetailsItem__content">Male</div>
-            </li>
-          </ul>
+          <div class="details">
+            <ul class="details__column">
+              <li class="characterDetailsItem">
+                <div class="characterDetailsItem__icon">
+                  <Icon type="calendar" size="24" />
+                </div>
+                <div class="characterDetailsItem__type">Birth&nbsp;Year</div>
+                <div class="characterDetailsItem__content">AV23</div>
+              </li>
+              <li class="characterDetailsItem">
+                <div class="characterDetailsItem__icon">
+                  <Icon type="alien" size="24" />
+                </div>
+                <div class="characterDetailsItem__type">Species</div>
+                <div class="characterDetailsItem__content">Human</div>
+              </li>
+              <li class="characterDetailsItem">
+                <div class="characterDetailsItem__icon">
+                  <Icon type="gender" size="24" />
+                </div>
+                <div class="characterDetailsItem__type">Gender</div>
+                <div class="characterDetailsItem__content">Male</div>
+              </li>
+            </ul>
 
-          <ul class="details__column">
-            <li class="characterDetailsItem">
-              <div class="characterDetailsItem__icon">
-                <Icon type="world" size="24" />
-              </div>
-              <div class="characterDetailsItem__type">Homeworld</div>
-              <div class="characterDetailsItem__content">Earth</div>
-            </li>
-            <li class="characterDetailsItem">
-              <div class="characterDetailsItem__icon">
-                <Icon type="film" size="24" />
-              </div>
-              <div class="characterDetailsItem__type">Films</div>
-              <div class="characterDetailsItem__content">Films</div>
-            </li>
-          </ul>
+            <ul class="details__column">
+              <li class="characterDetailsItem">
+                <div class="characterDetailsItem__icon">
+                  <Icon type="world" size="24" />
+                </div>
+                <div class="characterDetailsItem__type">Homeworld</div>
+                <div class="characterDetailsItem__content">Earth</div>
+              </li>
+              <li class="characterDetailsItem">
+                <div class="characterDetailsItem__icon">
+                  <Icon type="film" size="24" />
+                </div>
+                <div class="characterDetailsItem__type">Films</div>
+                <div class="characterDetailsItem__content">Films</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 import FirstCharAvatar from "../components/FirstCharAvatar";
 import Icon from "./Icon";
 import Divider from "./Divider";
@@ -74,6 +78,26 @@ export default {
     return {
       isOpen: false
     };
+  },
+  computed: {
+    ...mapGetters(["isModalOpen"])
+  },
+  methods: {
+    ...mapMutations({
+      setModalState: "SET_CHARACTER_MODAL_STATE",
+      blur: "SET_BLUR"
+    }),
+    close() {
+      this.setModalState(false);
+      this.blur(false);
+      document.body.style.overflow = "auto";
+    },
+    enter() {
+      this.$refs.modal.style.top = `${window.scrollY}px`;
+    },
+    leave() {
+      this.$refs.modal.style.top = "-150%";
+    }
   }
 };
 </script>
@@ -88,8 +112,9 @@ export default {
   width: 100%;
   height: 100vh;
   position: absolute;
-  top: 0;
+  top: -100%;
   left: 0;
+  transition: all 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
 }
 
 .appModal {
@@ -186,5 +211,14 @@ export default {
     }
     @include size-md(12);
   }
+}
+
+.modalOpening-enter-active,
+.modalOpening-leave-active {
+  transition: all 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+.modalOpening-enter,
+.modalOpening-leave-to {
+  transform: translateY(-150%);
 }
 </style>

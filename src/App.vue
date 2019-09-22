@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Blured :blur="blur" class="app">
+    <Blured :blur="isBlured" class="app">
       <AppHeader class="header" />
       <main class="content">
         <div class="content__view">
@@ -11,11 +11,14 @@
       </main>
       <AppFooter />
     </Blured>
+
     <Modal />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import AppHeader from "./components/AppHeader";
 import Blured from "./components/Blured";
 import AppFooter from "./components/AppFooter";
@@ -28,10 +31,8 @@ export default {
     AppFooter,
     Modal
   },
-  data() {
-    return {
-      blur: false
-    };
+  computed: {
+    ...mapGetters(["isBlured"])
   }
 };
 </script>

@@ -12,7 +12,10 @@ const axios = Axios.create({
 export default new Vuex.Store({
   state: {
     characters: [],
-    loading: false
+    loading: false,
+    currentCharacter: {},
+    isCharacterModalOpen: false,
+    isBlured: false
   },
   mutations: {
     SET_CHARACTERS(state, characters) {
@@ -20,6 +23,12 @@ export default new Vuex.Store({
     },
     TOGGLE_LOADING(state) {
       state.loading = !state.loading;
+    },
+    SET_CHARACTER_MODAL_STATE(state, status) {
+      state.isCharacterModalOpen = status;
+    },
+    SET_BLUR(state, status) {
+      state.isBlured = status;
     }
   },
   actions: {
@@ -51,6 +60,8 @@ export default new Vuex.Store({
   },
   getters: {
     characters: s => s.characters,
-    isLoading: s => s.loading
+    isLoading: s => s.loading,
+    isModalOpen: s => s.isCharacterModalOpen,
+    isBlured: s => s.isBlured
   }
 });

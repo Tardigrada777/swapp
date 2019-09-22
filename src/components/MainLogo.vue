@@ -1,6 +1,10 @@
 <template>
   <div class="mainLogo">
-    <img src="../assets/img/mainLogo.svg" alt class="mainLogo__img" />
+    <img
+      src="../assets/img/mainLogo.svg"
+      alt="Star Wars - Character Encyclopedia"
+      class="mainLogo__img"
+    />
   </div>
 </template>
 

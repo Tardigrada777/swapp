@@ -22,6 +22,7 @@ export default {
     left: 0;
     bottom: 0;
     background: transparent;
+    transition: all 0.3s ease-in-out;
   }
   &-on {
     filter: blur(10px);
