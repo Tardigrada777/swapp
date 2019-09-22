@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      blur: true
+      blur: false
     };
   }
 };

@@ -55,6 +55,10 @@ export default {
 
   &__input {
     background-color: transparent;
+    background: url("../assets/icons/search.svg");
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: 30px 30px;
     border: none;
     outline: none;
     border-bottom: 1px solid $gray;

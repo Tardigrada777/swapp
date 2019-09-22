@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-container">
+  <div class="modal-container" v-if="isOpen">
     <div class="appModal">
       <span class="appModal__closeBtn">&times;</span>
       <div class="appModal__content">
@@ -69,6 +69,11 @@ export default {
     FirstCharAvatar,
     Divider,
     Icon
+  },
+  data() {
+    return {
+      isOpen: false
+    };
   }
 };
 </script>
@@ -98,8 +103,12 @@ export default {
 
   @include col();
   @include size(8);
-  @include size-md(12);
   @include md(padding, 48px 24px);
+  @include md(top, 0);
+  @include md(left, 0);
+  @include md(width, 100%);
+  @include md(height, 100%);
+  @include md(transform, translateY(0) translateX(0));
 
   background-color: $black;
   color: $white;
@@ -171,6 +180,10 @@ export default {
   &__column {
     @include col();
     @include size(6);
+    // FIXME: похоже на костыль
+    @include to(990px) {
+      width: 100%;
+    }
     @include size-md(12);
   }
 }
