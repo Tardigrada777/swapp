@@ -8,7 +8,6 @@
         <div class="mainContent__search">
           <Search placeholder="Search by name" v-model="test" />
         </div>
-
         <CharactersList :items="characters" />
       </div>
     </transition>

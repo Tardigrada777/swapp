@@ -27,10 +27,10 @@ export default {
     };
   },
   mounted() {
-    this.$refs.input.addEventListener("focus", e => {
+    this.$refs.input.addEventListener("focus", () => {
       this.hasFocus = true;
     });
-    this.$refs.placeholder.addEventListener("click", e => {
+    this.$refs.placeholder.addEventListener("click", () => {
       this.hasFocus = true;
       this.$refs.input.focus();
     });
