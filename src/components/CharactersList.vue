@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 import CharacterCard from "../components/CharacterCard";
 
 export default {
@@ -22,9 +22,11 @@ export default {
       setModalState: "SET_CHARACTER_MODAL_STATE",
       blur: "SET_BLUR"
     }),
+    ...mapActions(["getCurrentCharacter"]),
     openCharacterModal(character) {
       this.setModalState(true);
       this.blur(true);
+      this.getCurrentCharacter(character);
       document.body.style.overflow = "hidden";
     }
   }

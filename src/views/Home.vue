@@ -1,12 +1,17 @@
 <template>
   <div class="home">
-    <transition leave-to-class="preloader-leave" mode="out-in" @after-leave="beforeEnterCharacters">
+    <!-- <transition leave-to-class="preloader-leave" @after-leave="beforeEnterCharacters">
       <Preloader v-if="isLoading" />
-    </transition>
-    <transition enter-class="content-enter-in" enter-to-class="content-enter" mode="out-in">
-      <div class="mainContent" v-if="contentVisible && !isLoading">
+    </transition>-->
+    <transition
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+      mode="out-in"
+    >
+      <Preloader v-if="isLoading" />
+      <div class="mainContent" v-else>
         <div class="mainContent__search">
-          <Search placeholder="Search by name" v-model="test" />
+          <Search placeholder="Search by name" />
         </div>
         <CharactersList :items="characters" />
       </div>
@@ -15,7 +20,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Search from "../components/Search";
 import CharactersList from "../components/CharactersList";
 
@@ -30,28 +35,23 @@ export default {
   },
   data() {
     return {
-      contentVisible: false,
-      test: ""
+      contentVisible: false
     };
   },
   computed: {
     ...mapGetters(["characters", "isLoading"])
   },
   methods: {
-    ...mapActions(["getCharacters", "getSpecies"]),
-    ...mapMutations({ toggleLoading: "TOGGLE_LOADING" }),
-    beforeEnterCharacters() {
-      this.contentVisible = true;
-    }
+    ...mapActions(["getCharacters", "getSpecies"])
   },
   created() {
-    this.toggleLoading();
-    setTimeout(() => {
-      if (this.characters.length > 0) {
-        this.toggleLoading();
-      }
-    }, 2000);
-    this.getCharacters();
+    if (this.characters.length) {
+      this.contentVisible = true;
+    } else {
+      this.getCharacters().then(() => {
+        this.contentVisible = true;
+      });
+    }
   }
 };
 </script>

@@ -14,6 +14,7 @@ export default new Vuex.Store({
     characters: [],
     loading: false,
     currentCharacter: {},
+    characterInfoLoading: false,
     isCharacterModalOpen: false,
     isBlured: false
   },
@@ -29,38 +30,50 @@ export default new Vuex.Store({
     },
     SET_BLUR(state, status) {
       state.isBlured = status;
+    },
+    SET_CURRENT_CHARACTER(state, character) {
+      state.currentCharacter = character;
+    },
+    SET_CHARACTER_INFO_LOADING(state, status) {
+      state.characterInfoLoading = status;
     }
   },
   actions: {
-    async getCharacters({ commit, dispatch }) {
+    async getCharacters({ commit }) {
       commit('TOGGLE_LOADING');
       const { data } = await axios.get('people/');
-      dispatch('getSpecies', data.results).then(res => {
-        commit('TOGGLE_LOADING');
-        commit('SET_CHARACTERS', res);
-      });
-    },
-    async getSpecies({ commit }, characters) {
-      characters.map(c => {
-        if (c.species.length === 0) {
-          c.species = 'Unknown';
-          return c;
-        }
-        axios
-          .get(c.species[0])
-          .then(res => {
-            c.species = res.data.name;
-            return c;
-          })
-          .catch(err => console.log(err));
+
+      const speciesPromises = [];
+      data.results.forEach(c => {
+        speciesPromises.push(axios.get(c.species));
       });
 
-      return characters;
+      Promise.all(speciesPromises).then(res => {
+        for (let i = 0; i < data.results.length; i++) {
+          data.results[i].species = res[i].data.name;
+        }
+        commit('TOGGLE_LOADING');
+        commit('SET_CHARACTERS', data.results);
+        return;
+      });
+    },
+    async getCurrentCharacter({ commit, getters }, character) {
+      const currentCharacter = getters.currentCharacter;
+      if (currentCharacter.name === character.name) return;
+
+      commit('SET_CHARACTER_INFO_LOADING', true);
+      const { data } = await axios.get(character.homeworld);
+      character.homeworldName = data.name;
+      commit('SET_CURRENT_CHARACTER', character);
+      commit('SET_CHARACTER_INFO_LOADING', false);
+      return;
     }
   },
   getters: {
     characters: s => s.characters,
+    currentCharacter: s => s.currentCharacter,
     isLoading: s => s.loading,
+    isCharaterInfoLoading: s => s.characterInfoLoading,
     isModalOpen: s => s.isCharacterModalOpen,
     isBlured: s => s.isBlured
   }

@@ -1,14 +1,21 @@
 <template>
-  <transition v-on:enter="enter" v-on:leave="leave">
+  <transition
+    enter-active-class="animated fadeInDown faster"
+    leave-active-class="animated fadeOutUp faster"
+    v-on:enter="enter"
+  >
     <div class="modal-container" ref="modal" v-if="isModalOpen">
       <div class="appModal">
         <span class="appModal__closeBtn" @click="close">&times;</span>
-        <div class="appModal__content">
+        <div v-if="isCharaterInfoLoading" class="appModal__preloader">
+          <div class="lds-dual-ring"></div>
+        </div>
+        <div class="appModal__content" v-else>
           <div class="characterInfo">
             <div class="characterInfo__avatar">
-              <FirstCharAvatar name="Luke" />
+              <FirstCharAvatar :name="currentCharacter.name" />
             </div>
-            <div class="characterInfo__name">Luke</div>
+            <div class="characterInfo__name">{{ currentCharacter.name }}</div>
           </div>
 
           <Divider />
@@ -20,21 +27,21 @@
                   <Icon type="calendar" size="24" />
                 </div>
                 <div class="characterDetailsItem__type">Birth&nbsp;Year</div>
-                <div class="characterDetailsItem__content">AV23</div>
+                <div class="characterDetailsItem__content">{{ currentCharacter.birth_year }}</div>
               </li>
               <li class="characterDetailsItem">
                 <div class="characterDetailsItem__icon">
                   <Icon type="alien" size="24" />
                 </div>
                 <div class="characterDetailsItem__type">Species</div>
-                <div class="characterDetailsItem__content">Human</div>
+                <div class="characterDetailsItem__content">{{ currentCharacter.species }}</div>
               </li>
               <li class="characterDetailsItem">
                 <div class="characterDetailsItem__icon">
                   <Icon type="gender" size="24" />
                 </div>
                 <div class="characterDetailsItem__type">Gender</div>
-                <div class="characterDetailsItem__content">Male</div>
+                <div class="characterDetailsItem__content">{{ currentCharacter.gender }}</div>
               </li>
             </ul>
 
@@ -44,7 +51,7 @@
                   <Icon type="world" size="24" />
                 </div>
                 <div class="characterDetailsItem__type">Homeworld</div>
-                <div class="characterDetailsItem__content">Earth</div>
+                <div class="characterDetailsItem__content">{{ currentCharacter.homeworldName }}</div>
               </li>
               <li class="characterDetailsItem">
                 <div class="characterDetailsItem__icon">
@@ -76,11 +83,12 @@ export default {
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      character: {}
     };
   },
   computed: {
-    ...mapGetters(["isModalOpen"])
+    ...mapGetters(["isModalOpen", "currentCharacter", "isCharaterInfoLoading"])
   },
   methods: {
     ...mapMutations({
@@ -94,10 +102,10 @@ export default {
     },
     enter() {
       this.$refs.modal.style.top = `${window.scrollY}px`;
-    },
-    leave() {
-      this.$refs.modal.style.top = "-150%";
     }
+  },
+  created() {
+    this;
   }
 };
 </script>
@@ -112,23 +120,25 @@ export default {
   width: 100%;
   height: 100vh;
   position: absolute;
-  top: -100%;
+  top: 0;
   left: 0;
-  transition: all 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53);
 }
 
 .appModal {
   border-radius: 8px;
-  padding: 80px;
 
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
 
+  min-height: 492px;
+  display: flex;
+  justify-content: center;
+
   @include col();
   @include size(8);
-  @include md(padding, 48px 24px);
+
   @include md(top, 0);
   @include md(left, 0);
   @include md(width, 100%);
@@ -149,6 +159,17 @@ export default {
     &:hover {
       cursor: pointer;
     }
+  }
+
+  &__preloader {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+  }
+  &__content {
+    padding: 80px;
+    @include md(padding, 48px 24px);
+    width: 100%;
   }
 }
 
@@ -213,12 +234,28 @@ export default {
   }
 }
 
-.modalOpening-enter-active,
-.modalOpening-leave-active {
-  transition: all 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+.lds-dual-ring {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
 }
-.modalOpening-enter,
-.modalOpening-leave-to {
-  transform: translateY(-150%);
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
