@@ -10,6 +10,7 @@
       type="text"
       v-model="query"
       @input="$emit('input', query)"
+      @keyup="$emit('keyup', $event)"
       ref="input"
     />
   </div>

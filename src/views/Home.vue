@@ -4,8 +4,8 @@
       <Preloader v-if="isLoading" />
     </transition>-->
     <transition
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
+      enter-active-class="animated fadeIn faster"
+      leave-active-class="animated fadeOut faster"
       mode="out-in"
     >
       <Preloader v-if="isLoading" />
@@ -42,16 +42,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["characters", "isLoading"]),
+    ...mapGetters(["characters", "isLoading", "isSearching"]),
     debouncedSearch() {
-      let DELAY = 5000;
+      let DELAY = 2000;
       return debounce(this.search, DELAY);
     }
   },
   methods: {
     ...mapActions(["getCharacters", "getSpecies"]),
     search() {
-      console.log(`Ищем ${this.query}`);
+      if (this.query.length === 0) return;
+      this.getCharacters(`?search=${this.query}`);
     }
   },
   created() {

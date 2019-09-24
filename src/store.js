@@ -39,9 +39,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async getCharacters({ commit }) {
+    async getCharacters({ commit }, url = '') {
       commit('TOGGLE_LOADING');
-      const { data } = await axios.get('people/');
+      const { data } = await axios.get(`people/${url}`);
 
       const speciesPromises = [];
       data.results.forEach(c => {

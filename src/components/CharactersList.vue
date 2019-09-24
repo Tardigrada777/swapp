@@ -42,6 +42,8 @@ export default {
   &__item {
     margin-bottom: 32px;
 
+    min-width: 320px;
+
     @include col();
     @include size(6);
     @include size-md(12);
