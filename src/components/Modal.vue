@@ -58,7 +58,9 @@
                   <Icon type="film" size="24" />
                 </div>
                 <div class="characterDetailsItem__type">Films</div>
-                <div class="characterDetailsItem__content">Films</div>
+                <div class="characterDetailsItem__content">
+                  <FilmsList :films="currentCharacter.filmsTitles" />
+                </div>
               </li>
             </ul>
           </div>
@@ -74,12 +76,14 @@ import { mapGetters, mapMutations } from "vuex";
 import FirstCharAvatar from "../components/FirstCharAvatar";
 import Icon from "./Icon";
 import Divider from "./Divider";
+import FilmsList from "./FilmsList";
 
 export default {
   components: {
     FirstCharAvatar,
     Divider,
-    Icon
+    Icon,
+    FilmsList
   },
   data() {
     return {
@@ -193,7 +197,7 @@ export default {
 
 .characterDetailsItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   margin-bottom: 20px;
   font-family: $base;

@@ -16,7 +16,8 @@ export default new Vuex.Store({
     currentCharacter: {},
     characterInfoLoading: false,
     isCharacterModalOpen: false,
-    isBlured: false
+    isBlured: false,
+    nextPage: null
   },
   mutations: {
     SET_CHARACTERS(state, characters) {
@@ -36,12 +37,20 @@ export default new Vuex.Store({
     },
     SET_CHARACTER_INFO_LOADING(state, status) {
       state.characterInfoLoading = status;
+    },
+    SET_MORE_CHARACTERS(state, characters) {
+      state.characters = state.characters.concat(characters);
     }
   },
   actions: {
-    async getCharacters({ commit }, url = '') {
+    async getCharacters({ commit, state }, url = '') {
+      commit('SET_CHARACTERS', []);
       commit('TOGGLE_LOADING');
       const { data } = await axios.get(`people/${url}`);
+
+      if (data.next) {
+        state.nextPage = data.next;
+      }
 
       const speciesPromises = [];
       data.results.forEach(c => {
@@ -64,9 +73,43 @@ export default new Vuex.Store({
       commit('SET_CHARACTER_INFO_LOADING', true);
       const { data } = await axios.get(character.homeworld);
       character.homeworldName = data.name;
-      commit('SET_CURRENT_CHARACTER', character);
-      commit('SET_CHARACTER_INFO_LOADING', false);
-      return;
+
+      const filmsUrls = character.films;
+      const filmsPromises = [];
+      filmsUrls.forEach(filmUrl => {
+        filmsPromises.push(axios.get(filmUrl));
+      });
+
+      character.filmsTitles = [];
+
+      Promise.all(filmsPromises).then(res => {
+        for (let i = 0; i < res.length; i++) {
+          character.filmsTitles.push(res[i].data.title);
+        }
+        commit('SET_CURRENT_CHARACTER', character);
+        commit('SET_CHARACTER_INFO_LOADING', false);
+        return;
+      });
+    },
+    async getMore({ commit, state }) {
+      const nextPage = await axios.get(state.nextPage);
+
+      if (nextPage.data.next) {
+        state.nextPage = nextPage.data.next;
+      }
+
+      const speciesPromises = [];
+      nextPage.data.results.forEach(c => {
+        speciesPromises.push(axios.get(c.species));
+      });
+
+      Promise.all(speciesPromises).then(res => {
+        for (let i = 0; i < nextPage.data.results.length; i++) {
+          nextPage.data.results[i].species = res[i].data.name;
+        }
+        commit('SET_MORE_CHARACTERS', nextPage.data.results);
+        return;
+      });
     }
   },
   getters: {
@@ -75,6 +118,9 @@ export default new Vuex.Store({
     isLoading: s => s.loading,
     isCharaterInfoLoading: s => s.characterInfoLoading,
     isModalOpen: s => s.isCharacterModalOpen,
-    isBlured: s => s.isBlured
+    isBlured: s => s.isBlured,
+    hasMore: s => {
+      return s.characters.length !== 0 && s.nextPage;
+    }
   }
 });
