@@ -11,7 +11,7 @@
       <Preloader v-if="isLoading" />
       <div class="mainContent" v-else>
         <div class="mainContent__search">
-          <Search placeholder="Search by name" />
+          <Search placeholder="Search by name" v-model="query" @input="debouncedSearch" />
         </div>
         <CharactersList :items="characters" />
       </div>
@@ -26,6 +26,8 @@ import CharactersList from "../components/CharactersList";
 
 import Preloader from "../components/Preloader";
 
+import { debounce } from "../utils/debounce";
+
 export default {
   name: "home",
   components: {
@@ -35,14 +37,22 @@ export default {
   },
   data() {
     return {
-      contentVisible: false
+      contentVisible: false,
+      query: ""
     };
   },
   computed: {
-    ...mapGetters(["characters", "isLoading"])
+    ...mapGetters(["characters", "isLoading"]),
+    debouncedSearch() {
+      let DELAY = 5000;
+      return debounce(this.search, DELAY);
+    }
   },
   methods: {
-    ...mapActions(["getCharacters", "getSpecies"])
+    ...mapActions(["getCharacters", "getSpecies"]),
+    search() {
+      console.log(`Ищем ${this.query}`);
+    }
   },
   created() {
     if (this.characters.length) {
